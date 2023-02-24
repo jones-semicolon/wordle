@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://jonestly-source.github.io/wordle/"><img src="https://raw.githubusercontent.com/jonestly-source/wordle/master/logo512.png" alt="Wordle" width="200"></a>
+  <a href="https://jonestly-source.github.io/wordle/"><img src="https://raw.githubusercontent.com/jonestly-source/wordle/gh-pages/logo512.png" alt="Wordle" width="200"></a>
   <br>
   Wordle
   <br>
