@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="#possible-updates">Possible Updates</a> •
-  <a href="#credits">Credits</a> •
+  <a href="#credits">Credits</a>
 </p>
 
 ## Possible Updates
