@@ -21,6 +21,7 @@
   - The number of letters can be change up to 4-10 letters.
 * Number of Tries
   - The number of tries can be change up to 4-10 Tries.
+  - The number of tries can be change up to 5-10 Tries.
 * Wordle Generator
   - Challenge a friend with any word from 4 to 11 letters.
 
