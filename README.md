@@ -17,6 +17,7 @@
 
 * Hard Mode
   - Any revealed hints must be used in subsequent guesses.
+* Dark Mode
 * Dektop Keyboard
   - Desktop Users don't need to click the tiles to write a word.
 * Number of Letters
