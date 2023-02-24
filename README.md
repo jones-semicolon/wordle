@@ -18,7 +18,7 @@
 * Hard Mode
   - Any revealed hints must be used in subsequent guesses.
 * Number of Letters
-  - The number of letters can be change up to 5-10 letters.
+  - The number of letters can be change up to 4-10 letters.
 * Number of Tries
   - The number of tries can be change up to 10-20 Tries.
 * Wordle Generator
