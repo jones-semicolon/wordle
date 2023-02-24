@@ -10,7 +10,6 @@ export default function Notification(props) {
         props.setNotif("");
       }, 2800);
     }
-    console.log(fade);
   }, [props]);
 
   return (

@@ -16,6 +16,7 @@ function App() {
   const [menuType, setMenuType] = useState("");
   const [letters, setLetters] = useState(5);
   const [rows, setRows] = useState(6);
+  const [invalidRow, setInvalidRow] = useState(false)
 
   useEffect(() => {
     if (word === "") {
@@ -23,16 +24,6 @@ function App() {
     }
   }, [letters, word]);
 
-  // const detectKeyDown = (e) => {
-  //   if(/^[a-zA-Z]$/.test(e.key) && value.length <= letters - 1) {
-  //     setValue(value.concat((e.key).toLowerCase()))
-  //   } else if (e.key === "Backspace" && value.length) {
-  //     setValue(value.length -= 1)
-  //   } else if (e.key === "Enter") {
-  //     submittedWord()
-  //   }
-  //   // console.log(value)
-  // }
 
   const typing = (e) => {
     if (e.target.value) {
@@ -43,24 +34,46 @@ function App() {
   };
 
   useEffect(() => {
-    // document.addEventListener('keyup', detectKeyDown, true);
-    const selectedRow = document.body.querySelectorAll(
-      '[aria-selected="true"] [aria-label="blank"]'
-    );
-    selectedRow.forEach((tile, i) => {
-      tile.innerText = typeof value[i] === "undefined" ? "" : value[i];
-    });
+    if (value) {
+      // console.log(value)
+      const selectedRow = document.body.querySelectorAll(
+        '[aria-selected="true"] [aria-label="blank"]'
+      );
+      selectedRow.forEach((tile, i) => {
+        tile.innerText = typeof value[i] === "undefined" ? "" : value[i];
+      });
+    }
 
-    if (currentRow === rows) {
+    if (currentRow === rows && !gameStatus) {
       //console.log("hello");
       setMenuType("gameover");
       setGameStatus(false);
       setMenu(true);
       input.reset();
       input.disable();
-      return;
     }
-  }, [value, currentRow]);
+
+    if (invalidRow) {
+      setTimeout(() => { setInvalidRow(false) }, 2000)
+    }
+  }, [value]);
+
+
+  useEffect(() => {
+    const keyboardEventListener = (e) => {
+      if (/^[a-zA-Z]$/.test(e.key) && value.length <= letters - 1) {
+        setValue(value => [...value, e.key])
+      } else if (e.key === "Backspace" && value.length) {
+        setValue(value => value.slice(0, -1))
+      } else if (e.key === "Enter") {
+        submittedWord()
+      }
+    }
+    document.body.addEventListener('keyup', keyboardEventListener);
+    return () => {
+      document.body.removeEventListener('keyup', keyboardEventListener);
+    }
+  }, [value])
 
   const submittedWord = (e) => {
     e?.preventDefault();
@@ -89,6 +102,7 @@ function App() {
               setGameStatus(true);
               input.reset();
             } else {
+              setInvalidRow(true)
               setNotification("Not a word");
               input.enable();
             }
@@ -97,6 +111,7 @@ function App() {
         .catch(() => null);
     } else {
       setNotification("Too Short");
+      setInvalidRow(true)
       input.enable();
     }
   };
@@ -104,7 +119,6 @@ function App() {
   const input = {
     reset: () => {
       document.body.querySelector("input").value = "";
-      setValue([]);
     },
     disable: () => {
       document.body.querySelector("input").setAttribute("disabled", "disabled");
@@ -121,16 +135,14 @@ function App() {
         if (value[index] === word.split("")[index]) {
           document.body
             .querySelector(
-              `[aria-selected="true"] > :nth-child(${
-                index + 1
+              `[aria-selected="true"] > :nth-child(${index + 1
               }) > [aria-label="blank"]`
             )
             .setAttribute("aria-label", "correct");
         } else {
           document.body
             .querySelector(
-              `[aria-selected="true"] > :nth-child(${
-                index + 1
+              `[aria-selected="true"] > :nth-child(${index + 1
               }) > [aria-label="blank"]`
             )
             .setAttribute("aria-label", "maybe");
@@ -138,8 +150,7 @@ function App() {
       } else {
         document.body
           .querySelector(
-            `[aria-selected="true"] > :nth-child(${
-              index + 1
+            `[aria-selected="true"] > :nth-child(${index + 1
             }) > [aria-label="blank"]`
           )
           .setAttribute("aria-label", "wrong");
@@ -154,7 +165,7 @@ function App() {
       .setAttribute("aria-selected", false);
     document.body
       .querySelectorAll("[aria-selected=false]")
-      [currentRow].setAttribute("aria-selected", "true");
+    [currentRow].setAttribute("aria-selected", "true");
   }
 
   function resetGame() {
@@ -203,6 +214,7 @@ function App() {
               className="row"
               id={i}
               aria-selected={i === currentRow ? true : false}
+              aria-invalid={i === currentRow && invalidRow ? invalidRow : false}
             >
               {[...Array(letters)].map((e, i) => (
                 <div className="tile">

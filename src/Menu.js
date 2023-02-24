@@ -53,11 +53,11 @@ export function Setting(props) {
     const right = getComputedStyle(document.documentElement).getPropertyValue('--right-color');
     const maybe = getComputedStyle(document.documentElement).getPropertyValue('--maybe-color');
     if (e.target.checked) {
-      const right = getComputedStyle(document.documentElement).getPropertyValue('--blind-right-color');
-      const maybe = getComputedStyle(document.documentElement).getPropertyValue('--blind-maybe-color');
+      const bright = getComputedStyle(document.documentElement).getPropertyValue('--blind-right-color');
+      const bmaybe = getComputedStyle(document.documentElement).getPropertyValue('--blind-maybe-color');
   
-      document.body.style.setProperty("--right-color", right)
-      document.body.style.setProperty("--maybe-color", maybe)
+      document.body.style.setProperty("--right-color", bright)
+      document.body.style.setProperty("--maybe-color", bmaybe)
     } else {
       document.body.style.setProperty("--right-color", right)
       document.body.style.setProperty("--maybe-color", maybe)
@@ -66,7 +66,7 @@ export function Setting(props) {
   return (
     <div className="menu-container">
       <div className="settings-nav">
-        Settings
+        <div className="settings-title">Settings</div>
         <Cancel className="icon" onClick={props.onClick} />
       </div>
       <div className="switch-container">
