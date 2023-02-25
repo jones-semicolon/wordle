@@ -1,9 +1,6 @@
 import { ReactComponent as Refresh } from "./refresh.svg";
 import { ReactComponent as Cancel } from "./cancel.svg";
 
-
-
-
 export function HowTo(props) {
   return (
     <div className="menu-container">
@@ -50,23 +47,31 @@ export function HowTo(props) {
 
 export function Setting(props) {
   const colorblind = (e) => {
-    const right = getComputedStyle(document.documentElement).getPropertyValue('--right-color');
-    const maybe = getComputedStyle(document.documentElement).getPropertyValue('--maybe-color');
+    const right = getComputedStyle(document.documentElement).getPropertyValue(
+      "--right-color"
+    );
+    const maybe = getComputedStyle(document.documentElement).getPropertyValue(
+      "--maybe-color"
+    );
     if (e.target.checked) {
-      const bright = getComputedStyle(document.documentElement).getPropertyValue('--blind-right-color');
-      const bmaybe = getComputedStyle(document.documentElement).getPropertyValue('--blind-maybe-color');
-  
-      document.body.style.setProperty("--right-color", bright)
-      document.body.style.setProperty("--maybe-color", bmaybe)
+      const right = getComputedStyle(document.documentElement).getPropertyValue(
+        "--blind-right-color"
+      );
+      const maybe = getComputedStyle(document.documentElement).getPropertyValue(
+        "--blind-maybe-color"
+      );
+
+      document.body.style.setProperty("--right-color", right);
+      document.body.style.setProperty("--maybe-color", maybe);
     } else {
-      document.body.style.setProperty("--right-color", right)
-      document.body.style.setProperty("--maybe-color", maybe)
+      document.body.style.setProperty("--right-color", right);
+      document.body.style.setProperty("--maybe-color", maybe);
     }
-  }
+  };
   return (
     <div className="menu-container">
       <div className="settings-nav">
-        <div className="settings-title">Settings</div>
+        Settings
         <Cancel className="icon" onClick={props.onClick} />
       </div>
       <div className="switch-container">
@@ -75,17 +80,24 @@ export function Setting(props) {
           <span>For improve color vision</span>
         </div>
         <label className="toggle">
-          <input className="toggle-checkbox" type="checkbox" onChange={(e) => colorblind(e)}/>
+          <input
+            className="toggle-checkbox"
+            type="checkbox"
+            onChange={(e) => colorblind(e)}
+          />
           <div className="toggle-switch"></div>
         </label>
       </div>
       <div className="switch-container">
         <div>
           <span>Hard Mode</span>
-          <span>Any revealed hints must be used in subsequent guesses {"(currently unnavailable)"}</span>
+          <span>
+            Any revealed hints must be used in subsequent guesses{" "}
+            {"(currently unnavailable)"}
+          </span>
         </div>
         <label className="toggle">
-          <input className="toggle-checkbox" type="checkbox" disabled/>
+          <input className="toggle-checkbox" type="checkbox" disabled />
           <div className="toggle-switch"></div>
         </label>
       </div>
@@ -96,11 +108,10 @@ export function Setting(props) {
 export function GameOver(props) {
   return (
     <div className="gameOver">
-      <div className="title">
-        {props.status ? "Congratulation" : "Game Over"}
-      </div>
-      <div disabled>The answer is</div>
+      <div className="title">{props.status ? "You win" : "You Lost"}</div>
+      <div disabled>The answer was</div>
       <div className="answer">{props.word}</div>
+      <div className="mean">{props.meaning}</div>
       <button onClick={props.onClick}>
         <Refresh className="icon" />
         Try Again
