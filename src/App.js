@@ -19,6 +19,7 @@ function App() {
   const [invalidRow, setInvalidRow] = useState(false);
   const [meaning, setMeaning] = useState("");
 
+
   useEffect(() => {
     if (word === "") {
       getWord(letters).then((e) => setWord(e.data[0]));
@@ -77,7 +78,7 @@ function App() {
         submittedWord();
       }
     };
-    if (!document.body.querySelector("form > input")) {
+    if (navigator.userAgent.match(/Windows/)) {
       document.body.addEventListener("keyup", keyboardEventListener);
       return () => {
         document.body.removeEventListener("keyup", keyboardEventListener);
@@ -221,7 +222,7 @@ function App() {
           setNotif={(e) => setNotification(e)}
         />
         <form className="board" onSubmit={submittedWord}>
-          <input type="text" onChange={typing} maxLength={letters} />
+          <input type="text" onChange={typing} maxLength={letters}/>
           {[...Array(rows)].map((e, i) => (
             <div
               className="row"
