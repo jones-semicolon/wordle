@@ -16,14 +16,15 @@ function App() {
   const [menuType, setMenuType] = useState("");
   const [letters, setLetters] = useState(5);
   const [rows, setRows] = useState(6);
-  const [invalidRow, setInvalidRow] = useState(false)
+  const [invalidRow, setInvalidRow] = useState(false);
+  const [meaning, setMeaning] = useState("");
 
   useEffect(() => {
     if (word === "") {
       getWord(letters).then((e) => setWord(e.data[0]));
+      setMeaning("");
     }
   }, [letters, word]);
-
 
   const typing = (e) => {
     if (e.target.value) {
@@ -44,6 +45,12 @@ function App() {
       });
     }
 
+    if (word && meaning === "") {
+      dictionary(word).then((e) =>
+        setMeaning(e.data[0].meanings[0].definitions[0].definition)
+      );
+    }
+
     if (currentRow === rows && !gameStatus) {
       //console.log("hello");
       setMenuType("gameover");
@@ -54,26 +61,29 @@ function App() {
     }
 
     if (invalidRow) {
-      setTimeout(() => { setInvalidRow(false) }, 2000)
+      setTimeout(() => {
+        setInvalidRow(false);
+      }, 2000);
     }
   }, [value]);
-
 
   useEffect(() => {
     const keyboardEventListener = (e) => {
       if (/^[a-zA-Z]$/.test(e.key) && value.length <= letters - 1) {
-        setValue(value => [...value, e.key])
+        setValue((value) => [...value, e.key]);
       } else if (e.key === "Backspace" && value.length) {
-        setValue(value => value.slice(0, -1))
+        setValue((value) => value.slice(0, -1));
       } else if (e.key === "Enter") {
-        submittedWord()
+        submittedWord();
       }
+    };
+    if (!document.body.querySelector("form > input")) {
+      document.body.addEventListener("keyup", keyboardEventListener);
+      return () => {
+        document.body.removeEventListener("keyup", keyboardEventListener);
+      };
     }
-    document.body.addEventListener('keyup', keyboardEventListener);
-    return () => {
-      document.body.removeEventListener('keyup', keyboardEventListener);
-    }
-  }, [value])
+  }, [value]);
 
   const submittedWord = (e) => {
     e?.preventDefault();
@@ -102,7 +112,7 @@ function App() {
               setGameStatus(true);
               input.reset();
             } else {
-              setInvalidRow(true)
+              setInvalidRow(true);
               setNotification("Not a word");
               input.enable();
             }
@@ -111,7 +121,7 @@ function App() {
         .catch(() => null);
     } else {
       setNotification("Too Short");
-      setInvalidRow(true)
+      setInvalidRow(true);
       input.enable();
     }
   };
@@ -135,14 +145,16 @@ function App() {
         if (value[index] === word.split("")[index]) {
           document.body
             .querySelector(
-              `[aria-selected="true"] > :nth-child(${index + 1
+              `[aria-selected="true"] > :nth-child(${
+                index + 1
               }) > [aria-label="blank"]`
             )
             .setAttribute("aria-label", "correct");
         } else {
           document.body
             .querySelector(
-              `[aria-selected="true"] > :nth-child(${index + 1
+              `[aria-selected="true"] > :nth-child(${
+                index + 1
               }) > [aria-label="blank"]`
             )
             .setAttribute("aria-label", "maybe");
@@ -150,7 +162,8 @@ function App() {
       } else {
         document.body
           .querySelector(
-            `[aria-selected="true"] > :nth-child(${index + 1
+            `[aria-selected="true"] > :nth-child(${
+              index + 1
             }) > [aria-label="blank"]`
           )
           .setAttribute("aria-label", "wrong");
@@ -165,7 +178,7 @@ function App() {
       .setAttribute("aria-selected", false);
     document.body
       .querySelectorAll("[aria-selected=false]")
-    [currentRow].setAttribute("aria-selected", "true");
+      [currentRow].setAttribute("aria-selected", "true");
   }
 
   function resetGame() {
@@ -226,7 +239,12 @@ function App() {
         </form>
         <div className="menu" style={{ display: menu ? "block" : "none" }}>
           {menuType === "gameover" ? (
-            <GameOver word={word} onClick={resetGame} status={gameStatus} />
+            <GameOver
+              word={word}
+              onClick={resetGame}
+              status={gameStatus}
+              meaning={meaning}
+            />
           ) : menuType === "instruction" ? (
             <HowTo onClick={() => setMenu(false)} />
           ) : menuType === "settings" ? (
