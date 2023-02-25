@@ -18,6 +18,8 @@ function App() {
   const [rows, setRows] = useState(6);
   const [invalidRow, setInvalidRow] = useState(false);
   const [meaning, setMeaning] = useState("");
+  const [hardLetter, setHardLetter] = useState([])
+  const [hardMode, setHardMode] = useState(false)
 
 
   useEffect(() => {
@@ -93,7 +95,7 @@ function App() {
       dictionary(value.join(""))
         .then((e) => {
           if (e && value.join("") === word) {
-            setNotification("sheesh");
+            setNotification("Sheeeeeeeeesh");
             document.body
               .querySelectorAll(`[aria-selected="true"] [aria-label="blank"]`)
               .forEach((tile) => tile.setAttribute("aria-label", "correct"));
@@ -142,7 +144,10 @@ function App() {
   function checkWord(value) {
     value.forEach((v, index) => {
       if (word.includes(v)) {
-        //console.log(value[index], word.split("")[index]);
+        if(hardMode && (!hardLetter.includes(v) &&  hardLetter.length)) {
+          setNotification(`Guess must have letter of ${[...new Set(hardLetter)].join(', ').toUpperCase()}`)
+          return
+        }
         if (value[index] === word.split("")[index]) {
           document.body
             .querySelector(
@@ -159,6 +164,9 @@ function App() {
               }) > [aria-label="blank"]`
             )
             .setAttribute("aria-label", "maybe");
+        }
+        if(!hardLetter.includes(v) && hardMode) {
+          setHardLetter(hardLetter => [...hardLetter, v])
         }
       } else {
         document.body
@@ -249,7 +257,7 @@ function App() {
           ) : menuType === "instruction" ? (
             <HowTo onClick={() => setMenu(false)} />
           ) : menuType === "settings" ? (
-            <Setting onClick={() => setMenu(false)} />
+            <Setting onClick={() => setMenu(false)} hardMode={(e) => setHardMode(e.target.checked)}/>
           ) : null}
         </div>
       </div>

@@ -71,7 +71,7 @@ export function Setting(props) {
   return (
     <div className="menu-container">
       <div className="settings-nav">
-        Settings
+        <div className="settings-title">Settings</div>
         <Cancel className="icon" onClick={props.onClick} />
       </div>
       <div className="switch-container">
@@ -97,7 +97,7 @@ export function Setting(props) {
           </span>
         </div>
         <label className="toggle">
-          <input className="toggle-checkbox" type="checkbox" disabled />
+          <input className="toggle-checkbox" type="checkbox" onChange={props.hardMode} />
           <div className="toggle-switch"></div>
         </label>
       </div>
