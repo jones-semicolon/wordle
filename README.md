@@ -32,3 +32,6 @@ This Web App uses the following open source packages and API's:
 * [React.js](https://reactjs.org/)
 * [DictionaryAPI](https://dictionaryapi.dev/)
 * [Vercel](https://random-word-api.vercel.app/)
+
+## 💰 You can help me by Donating
+  [![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jonestly) 
